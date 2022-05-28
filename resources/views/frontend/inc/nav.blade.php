@@ -124,7 +124,6 @@
                         </div>
                     </div>
                 @endauth
-
             </div>
         </div>
     </div>
@@ -134,28 +133,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@if ( get_setting('main_header_menu_labels') !=  null )
+    @if ( get_setting('main_header_menu_labels') !=  null )
         <div class="bg-light py-md-1 py-0 border-danger mt-3 border-bottom-10">
             <nav class="navbar navbar-expand-lg navbar-dark d-md-none">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -179,20 +157,81 @@
                 </div>
             </nav>
 
-            <div class="container-fluid pl-0 pr-0 d-none d-md-block">
-                <div class="d-flex justify-content-between">
-                    <ul class="list-inline mb-0 pl-0 mobile-hor-swipe text-left d-flex align-items-center justify-content-between w-100">
-                        @foreach (json_decode( get_setting('main_header_menu_labels'), true) as $key => $value)
-                            <li class="list-inline-item mr-0">
-                                <a href="{{ json_decode( get_setting('main_header_menu_links'), true)[$key] }}"
-                                   class="text-matt opacity-100 fs-14 px-3 py-2 d-inline-block fw-600 hov-opacity-80">
-                                    {{ translate($value) }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
+
+
+{{--            header top hover megamenu  --}}
+
+            @php
+                $num_todays_deal = count(filter_products(\App\Product::where('published', 1)->where('todays_deal', 1 ))->get());
+                $featured_categories = \App\Category::where('featured', 1)->get();
+
+                $navTopCategories = json_decode(get_setting('header_top_nav_categories'));
+            @endphp
+
+            @if($navTopCategories)
+                <div class="container-fluid bg-light">
+                    <div class="row gutters-10 position-relative">
+
+                        @if (count($navTopCategories) > 0)
+                            <div class="col-lg-12 aiz-category-menu d-none d-lg-block">
+                                <ul class="list-unstyled categories no-scrollbar mb-2 row gutters-5 justify-content-around">
+                                    @foreach ($navTopCategories as $key => $category)
+                                        @php $category = \App\Category::find($category); @endphp
+                                        @if(!$loop->first)
+                                            <li class="category-nav-element minw-0 botton-nave-li" data-id="{{ $category->id }}">
+                                                <a href="{{ route('products.category', $category->slug) }}"
+                                                   class="text-matt opacity-100 fs-14 px-3 py-2 d-inline-block fw-600 hov-opacity-80">
+                                                    {{ $category->getTranslation('name') }}
+                                                </a>
+                                                @if(count(\App\Utility\CategoryUtility::get_immediate_children_ids($category->id))>0)
+                                                    <div class="sub-cat-menu c-scrollbar-light rounded shadow-lg p-4">
+                                                        <div class="c-preloader text-center absolute-center">
+                                                            <i class="las la-spinner la-spin la-3x opacity-70"></i>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </li>
+                                        @else
+                                            <li class="minw-0 botton-nave-li" data-id="{{ $category->id }}">
+                                                <a href="{{ route('products.category', $category->slug) }}"
+                                                   class="text-matt opacity-100 fs-14 px-3 py-2 d-inline-block fw-600 hov-opacity-80">
+                                                    {{ $category->getTranslation('name') }}
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            <div class="col-12 d-none d-md-block d-lg-none">
+                                <div class="aiz-carousel gutters-10 half-outside-arrow"
+                                     data-items="5"
+                                     data-md-items="5"
+                                     data-sm-items="5"
+                                     data-arrows='true'
+                                     data-infinite='true'
+                                >
+                                    @foreach ($featured_categories as $key => $category)
+                                        <div class="carousel-box">
+                                            <div class="aiz-card-box border border-light hov-shadow-md has-transition">
+                                                <div class="position-relative">
+                                                    <a href="{{ route('products.category', $category->slug) }}" class="d-block">
+                                                        {{ $category }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            @else
+                <small class="text-center">No have Selected Category</small>
+            @endif
+
+{{--            header top hover megamenu  --}}
         </div>
     @endif
 

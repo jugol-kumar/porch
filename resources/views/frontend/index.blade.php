@@ -53,17 +53,21 @@
     @if ( get_setting('top10_categories') !=  null )
         <div class="container mb-5">
             <div class="py-md-1 py-0">
-                <nav class="navbar navbar-expand-lg navbar-dark d-md-none">
-                    <div class="collapse navbar-collapse" id="navbarText">
-                        <ul class="navbar-nav mr-auto">
-                            @if(json_decode(get_setting('top10_categories'), true))
-                                {{ json_decode(get_setting('top10_categories'), true) }}
-                            @else
-                                <small>No have category</small>
-                            @endif
-                        </ul>
-                    </div>
-                </nav>
+{{--                <nav class="navbar navbar-expand-lg navbar-dark d-md-none">--}}
+{{--                    <div class="collapse navbar-collapse" id="navbarText">--}}
+{{--                        <ul class="navbar-nav mr-auto">--}}
+{{--                            @if(json_decode(get_setting('top10_categories'), true))--}}
+{{--                                @forelse(json_decode(get_setting('top10_categories'), true) as $key => $value)--}}
+{{--                                    {{  }}--}}
+{{--                                @empty--}}
+{{--                                    <small>no have top category</small>    --}}
+{{--                                @endforeach--}}
+{{--                            @else--}}
+{{--                                <small>No have category</small>--}}
+{{--                            @endif--}}
+{{--                        </ul>--}}
+{{--                    </div>--}}
+{{--                </nav>--}}
 
                 <div class="container d-none d-md-block">
                     <div class="d-flex justify-content-between">
@@ -203,24 +207,22 @@
     @endif
 
     {{-- fetured category section start here--}}
-    @if (get_setting('home_banner1_images') != null)
+    @if (get_setting('categories_products') != null)
         <div class="mb-4 mt-5 mt-sm-0 x_sm_category">
             <div class="container-fluid pl-5 pr-5 mt_0">
                 <h3 class="font-weight-bolder text-danger mb-4 fs-20">Featured Category</h3>
                 <div class="row gutters-10">
-                    @php
-                        $banner_1_imags = json_decode(get_setting('home_banner1_images'));
-                    @endphp
-                    @foreach($banner_1_imags as $key=> $banner_2_imags)
+                    @foreach (json_decode(get_setting('categories_products'), true) as $key => $value)
+                        @php $category = \App\Category::find($value); @endphp
                         <div class="col-md-2 col-4 col-sm-2">
-                            <a href="{{ json_decode(get_setting('home_banner1_links'), true)[$key] }}" class="d-block text-reset">
+                            <a href="" class="d-block text-reset">
                                 <div class="card shadow-none bg-transparent border-0">
                                     <div class="card-body p-0">
                                         <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
-                                             data-src="{{ uploaded_asset($banner_1_imags[$key])}}"
+                                             data-src="{{ uploaded_asset($category->banner)}}"
                                              alt="{{ env('APP_NAME') }} promo"
                                              class="img-fluid lazyload min-h-215 image-default">
-                                        <p class="text-center font-weight-bold m-0 py-1 bg-transparent">{{ json_decode(get_setting('home_banner1_names'), true)[$key] }}</p>
+                                        <p class="text-center font-weight-bold m-0 py-1 bg-transparent">{{ $category->name }}</p>
                                     </div>
                                 </div>
                             </a>
