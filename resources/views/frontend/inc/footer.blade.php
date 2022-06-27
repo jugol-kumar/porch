@@ -281,6 +281,8 @@
         @endif
     </div>
 </div>
+
+
 @if (Auth::check() && !isAdmin())
     <div class="aiz-mobile-side-nav collapse-sidebar-wrap sidebar-xl d-xl-none z-1035">
         <div class="overlay dark c-pointer overlay-fixed" data-toggle="class-toggle" data-target=".aiz-mobile-side-nav" data-same=".mobile-side-nav-thumb"></div>

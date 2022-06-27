@@ -24,11 +24,13 @@
     					<div class="card-body">
     						<form action="{{ route('business_settings.update') }}" method="POST" enctype="multipart/form-data">
     							@csrf
+
 								<div class="form-group">
                                     <label>Widget Title</label>
                                     <input type="hidden" name="types[]" value="about_widget_title">
                                     <input type="text" class="form-control" placeholder="Widget Title" name="about_widget_title" value="{{ get_setting('about_widget_title')}}">
                                 </div>
+
     							<div class="form-group">
     			                    <label class="form-label" for="signinSrEmail">{{ translate('Footer Logo') }}</label>
     			                    <div class="input-group " data-toggle="aizuploader" data-type="image">

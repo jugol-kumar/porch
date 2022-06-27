@@ -2,9 +2,9 @@
 
 @section('content')
 
-    @if($flash_deal->status == 1 && strtotime(date('Y-m-d H:i:s')) <= $flash_deal->end_date) 
+    @if($flash_deal->status == 1 && strtotime(date('Y-m-d H:i:s')) <= $flash_deal->end_date)
     <div style="background-color:{{ $flash_deal->background_color }}">
-        @if ($flash_deal->banner)            
+        @if ($flash_deal->banner)
         <section class="text-center mb-5">
             <img
                 src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
@@ -27,11 +27,11 @@
                         @endphp
                         @if ($product->published != 0)
                             <div class="col mb-2">
-                                <div class="aiz-card-box border border-light rounded shadow-sm hov-shadow-md h-100 has-transition bg-white">
+                                <div class="aiz-card-box border border-light rounded shadow-sm hov-shadow-md h-100  has-transition bg-white">
                                     <div class="position-relative">
                                         <a href="{{ route('product', $product->slug) }}" class="d-block">
                                             <img
-                                                class="img-fit lazyload mx-auto h-160px h-sm-200px h-md-220px h-xl-270px"
+                                                class="img-fit lazyload mx-auto h-160px h-sm-200px h-md-220px h-xl-270px max "
                                                 src="{{ static_asset('assets/img/placeholder.jpg') }}"
                                                 data-src="{{ uploaded_asset($product->thumbnail_img) }}"
                                                 alt="{{  $product->getTranslation('name')  }}"
